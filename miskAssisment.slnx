@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="Application/Application.csproj" Id="ea994baf-28e0-472d-b07b-eef5a5182324" />
+  <Project Path="ContextLayer/ContextLayer.csproj" Id="a9b9395a-69fc-48b8-b907-edf4f75e8720" />
+  <Project Path="Domain/Domain.csproj" Id="96aa2ad4-0599-4554-8f6a-5fe54e556c4e" />
+  <Project Path="DTO/DTO.csproj" Id="d2ac3d10-10f8-45a5-8679-0aa259fcd198" />
+  <Project Path="Infrastructure/Infrastructure.csproj" Id="28ddcd73-6449-4a56-b35c-32fd83fa930d" />
+  <Project Path="miskAssisment/miskAssisment.csproj" />
+</Solution>

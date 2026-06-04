@@ -1,0 +1,6 @@
+@miskAssisment_HostAddress = http://localhost:5160
+
+GET {{miskAssisment_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
