@@ -11,10 +11,4 @@
     <ProjectReference Include="..\DTO\DTO.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Configuration\" />
-    <Folder Include="UnitOfWork\" />
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>
