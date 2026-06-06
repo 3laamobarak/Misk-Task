@@ -16,6 +16,8 @@ namespace Domain.Models
         public string NationalId { get; set; }
         public string Department { get; set; }
 
+        public string? ApplicationUserId { get; set; }
+        public ApplicationUser? ApplicationUser { get; set; }
         public ICollection<Enrollment> Enrollments { get; set; }
     }
 }
