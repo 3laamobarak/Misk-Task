@@ -2,13 +2,20 @@ using Application.Contracts;
 using Application.Helper;
 using Application.Services;
 using ContextLayer;
+using Domain.Interfaces;
 using Domain.Models;
+using Infrastructure.Repositories;
+using Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using System.Text;
+using DTO.Validation;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using miskAssisment.Middleware;
 
 namespace miskAssisment
 {
@@ -19,6 +26,14 @@ namespace miskAssisment
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();
+            
+//            builder.Services.AddFluentValidationAutoValidation();
+  //          builder.Services.AddValidatorsFromAssemblyContaining<CreateCourseValidator>();
+    //        builder.Services.AddValidatorsFromAssemblyContaining<CreateEnrollmentValidator>();
+      //      builder.Services.AddValidatorsFromAssemblyContaining<CreateLearnerValidator>();
+        //    builder.Services.AddFluentValidationAutoValidation(); // Enables automatic ModelState checking
+         //   builder.Services.AddValidatorsFromAssemblyContaining<CreateCourseValidator>();
+            
             builder.Services.AddEndpointsApiExplorer();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
@@ -69,7 +84,15 @@ namespace miskAssisment
                 .AddEntityFrameworkStores<Context>()
                 .AddDefaultTokenProviders();
 
+            // register the baserepository and unitofwork and services and repositories
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            builder.Services.AddScoped<ICourseService, CourseService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<ILearnerService, LearnerService>();
+            builder.Services.AddScoped<ILearnerRepository, LearnerRepository>();
+            builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
+
             builder.Services.AddHttpContextAccessor();
 
 
@@ -95,7 +118,7 @@ namespace miskAssisment
             });
 
             var app = builder.Build();
-            // 7. ENVIRONMENT PIPELINE SETUP
+            app.UseMiddleware<ExceptionMiddleware>(); 
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi(); // Exposes /openapi/v1.json
@@ -126,7 +149,6 @@ namespace miskAssisment
                 }
             }
 
-            // 9. MIDDLEWARE PIPELINE EXECUTION
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
@@ -134,7 +156,6 @@ namespace miskAssisment
 
             app.MapControllers();
 
-            // Run asynchronously to handle non-blocking thread starts
             await app.RunAsync();
         }
     }
